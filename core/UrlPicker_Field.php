@@ -3,29 +3,32 @@
 namespace Carbon_Field_UrlPicker;
 
 use Carbon_Fields\Field\Field;
+use Carbon_Fields\Value_Set\Value_Set;
 
 class UrlPicker_Field extends Field {
 
-	/**
-	 * Minimum value
-	 *
-	 * @var null|float
-	 */
-	protected $min = null;
+	protected $url = '';
+	protected $anchor = '';
+	protected $blank = false;
 
 	/**
-	 * Maximum value
+	 * Create a field from a certain type with the specified label.
 	 *
-	 * @var null|float
+	 * @param string $type  Field type
+	 * @param string $name  Field name
+	 * @param string $label Field label
 	 */
-	protected $max = null;
+	public function __construct( $type, $name, $label ) {
+		$this->set_value_set( new Value_Set( Value_Set::TYPE_MULTIPLE_PROPERTIES, array( 'url' => '', 'url_anchor' => '', 'blank' => false ) ) );
+		add_action('wp_footer', array( $this, 'loadTinyMce' ));
+		parent::__construct( $type, $name, $label );
+	}
 
-	/**
-	 * Step/interval between allowed values
-	 *
-	 * @var null|float
-	 */
-	protected $step = null;
+	public function loadTinyMce()
+	{
+		require_once ABSPATH . "wp-includes/class-wp-editor.php";
+  	_WP_Editors::wp_link_dialog();
+	}
 
 	/**
 	 * Prepare the field type for use
@@ -46,7 +49,7 @@ class UrlPicker_Field extends Field {
 		$root_uri = \Carbon_Fields\Carbon_Fields::directory_to_url( \Carbon_Field_UrlPicker\DIR );
 
 		# Enqueue JS
-		wp_enqueue_script( 'carbon-field-urlpicker', $root_uri . '/assets/js/bundle.js', array( 'carbon-fields-boot' ) );
+		wp_enqueue_script( 'carbon-field-urlpicker', $root_uri . '/assets/js/bundle.js', array( 'carbon-fields-boot', 'wplink', 'wpdialogs') );
 
 		# Enqueue CSS
 		wp_enqueue_style( 'carbon-field-urlpicker', $root_uri . '/assets/css/field.css' );
@@ -58,32 +61,25 @@ class UrlPicker_Field extends Field {
 	 * @param array $input Array of field names and values.
 	 */
 	public function set_value_from_input( $input ) {
-		parent::set_value_from_input( $input );
-
-		$value = $this->get_value();
-		if ( $value === '' ) {
-			return;
+		if ( ! isset( $input[ $this->get_name() ] ) ) {
+			$this->set_value( null );
+			return $this;
 		}
 
-		$value = floatval( $value );
+		$value_set = array(
+			'url' => '',
+			'url_anchor' => '',
+			'blank' => false,
+		);
 
-		if ( $this->min !== null ) {
-			$value = max( $value, $this->min );
-		}
-
-		if ( $this->max !== null ) {
-			$value = min( $value, $this->max );
-		}
-
-		if ( $this->step !== null ) {
-			$step_base = ( $this->min !== null ) ? $this->min : 0;
-			$is_valid_step_value = ( $value - $step_base ) % $this->step === 0;
-			if ( ! $is_valid_step_value ) {
-				$value = $step_base; // value is not valid - reset it to a base value
+		foreach ( $value_set as $key => $v ) {
+			if ( isset( $input[ $this->get_name() ][ $key ] ) ) {
+				$value_set[ $key ] = $input[ $this->get_name() ][ $key ];
 			}
 		}
 
-		$this->set_value( $value );
+		$this->set_value( $value_set );
+		return $this;
 	}
 
 	/**
@@ -95,45 +91,13 @@ class UrlPicker_Field extends Field {
 	public function to_json( $load ) {
 		$field_data = parent::to_json( $load );
 
+
 		$field_data = array_merge( $field_data, array(
-			'min' => $this->min,
-			'max' => $this->max,
-			'step' => $this->step,
+			'url' => $this->url,
+			'url_anchor' => $this->anchor,
+			'blank' => $this->blank,
 		) );
 
 		return $field_data;
-	}
-
-	/**
-	 * Set field minimum value. Default: null
-	 *
-	 * @param null|float $min
-	 * @return Field $this
-	 */
-	function set_min( $min ) {
-		$this->min = floatval( $min );
-		return $this;
-	}
-
-	/**
-	 * Set field maximum value. Default: null
-	 *
-	 * @param null|float $max
-	 * @return Field $this
-	 */
-	function set_max( $max ) {
-		$this->max = floatval( $max );
-		return $this;
-	}
-
-	/**
-	 * Set field step value. Default: null
-	 *
-	 * @param null|float $step
-	 * @return Field $this
-	 */
-	function set_step( $step ) {
-		$this->step = floatval( $step );
-		return $this;
 	}
 }

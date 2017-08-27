@@ -24,20 +24,27 @@ import withSetup from 'fields/decorators/with-setup';
 export const UrlPicker = ({
 	name,
 	field,
-	handleChange
+	handleChange,
+	openUrlPicker
 }) => {
 	return <Field field={field}>
+		<span
+			className="button button-secondary"
+			onClick={openUrlPicker}>cucu</span>
 		<input
-			type="number"
-			id={field.id}
-			name={name}
-			value={field.value}
-			disabled={!field.ui.is_visible}
-			className="regular-text"
-			max={field.max}
-			min={field.min}
-			step={field.step}
-			onChange={handleChange} />
+			name={`${name}[url]`}
+			value={field.value.url}
+			readOnly />
+
+		<input
+			name={`${name}[url_anchor]`}
+			value={field.value.url_anchor}
+			readOnly />
+
+		<input
+			name={`${name}[blank]`}
+			value={field.value.blank}
+			readOnly />
 	</Field>;
 }
 
@@ -50,12 +57,14 @@ UrlPicker.propTypes = {
 	name: PropTypes.string,
 	field: PropTypes.shape({
 		id: PropTypes.string,
-		value: PropTypes.string,
-		min: PropTypes.number,
-		max: PropTypes.number,
-		step: PropTypes.number,
+		value: PropTypes.shape({
+			url: PropTypes.string,
+			url_anchor: PropTypes.string,
+			blank: PropTypes.boolean,
+		})
 	}),
 	handleChange: PropTypes.func,
+	openUrlPicker: PropTypes.func,
 };
 
 /**
@@ -79,6 +88,30 @@ export const enhance = compose(
 	 */
 	withHandlers({
 		handleChange: ({ field, setFieldValue }) => ({ target: { value } }) => setFieldValue(field.id, value),
+		openUrlPicker: ({ field }) => ({ target: { value } }) => {
+			var editorDummy = jQuery('<textarea />', {
+				id: field.id
+			});
+
+			editorDummy.appendTo('body')
+		    // save any existing default initialization
+		    // wplink_defaults = wpLink.setDefaultValues || {};
+
+		    // initialize with current URL and title
+		    // wpLink.setDefaultValues = function() {
+		    //     // set the current title and URL
+		    //     var $text_inputs = $('#wp-link').find('input[type=text]');
+		    //     $($text_inputs[1]).val(field.url_anchor);
+		    //     $($text_inputs[0]).val(field.url);
+
+		    //     // target a blank page?
+		    //     var $checkbox_inputs = $('#wp-link').find('input[type=checkbox]');
+		    //     $checkbox_inputs.first().prop('checked', field.blank);
+		    // };
+		    wpLink.open(field.id); // open the link popup
+
+			return false;
+		},
 	})
 );
 
