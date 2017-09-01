@@ -89,26 +89,40 @@ export const enhance = compose(
 	withHandlers({
 		handleChange: ({ field, setFieldValue }) => ({ target: { value } }) => setFieldValue(field.id, value),
 		openUrlPicker: ({ field }) => ({ target: { value } }) => {
-			var editorDummy = jQuery('<textarea />', {
-				id: field.id
-			});
+			let dummyID = 'dummy' + field.id;
+			let $ = jQuery;
+			if(!$('#wp-link-wrap').length) {
+				$.get(ajaxurl, { action: 'carbonfields_urlpicker_get_tinymce_popup' }, (data) => {
+					$('#wpfooter').after(data);
+					openTinyMceLinkEditor();
+				});
+			} else {
+				openTinyMceLinkEditor();
+			}
 
-			editorDummy.appendTo('body')
-		    // save any existing default initialization
-		    // wplink_defaults = wpLink.setDefaultValues || {};
+			function openTinyMceLinkEditor() {
+				let editorDummy = jQuery('<textarea />', {
+					id: dummyID
+				});
 
-		    // initialize with current URL and title
-		    // wpLink.setDefaultValues = function() {
-		    //     // set the current title and URL
-		    //     var $text_inputs = $('#wp-link').find('input[type=text]');
-		    //     $($text_inputs[1]).val(field.url_anchor);
-		    //     $($text_inputs[0]).val(field.url);
+				editorDummy.appendTo('body')
+			    // save any existing default initialization
+			    // wplink_defaults = wpLink.setDefaultValues || {};
 
-		    //     // target a blank page?
-		    //     var $checkbox_inputs = $('#wp-link').find('input[type=checkbox]');
-		    //     $checkbox_inputs.first().prop('checked', field.blank);
-		    // };
-		    wpLink.open(field.id); // open the link popup
+			    // initialize with current URL and title
+			    // wpLink.setDefaultValues = function() {
+			    //     // set the current title and URL
+			    //     var $text_inputs = $('#wp-link').find('input[type=text]');
+			    //     $($text_inputs[1]).val(field.url_anchor);
+			    //     $($text_inputs[0]).val(field.url);
+
+			    //     // target a blank page?
+			    //     var $checkbox_inputs = $('#wp-link').find('input[type=checkbox]');
+			    //     $checkbox_inputs.first().prop('checked', field.blank);
+			    // };
+			    wpLink.init(); // open the link popup
+			    wpLink.open(dummyID); // open the link popup
+			}
 
 			return false;
 		},
