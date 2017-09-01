@@ -118,6 +118,7 @@ export const enhance = compose(
 			if(!$('#wp-link-wrap').length) {
 				$.get(ajaxurl, { action: 'carbonfields_urlpicker_get_tinymce_popup' }, function(data) {
 					$('#wpfooter').after(data);
+					wpLink.init();
 					openTinyMceLinkEditor();
 				});
 			} else {
@@ -136,7 +137,6 @@ export const enhance = compose(
 					$('#wp-link-target').prop('checked', !!field.value.blank);
 				};
 
-				wpLink.init();
 				wpLink.open(dummyID);
 
 				$(document).one( 'wplink-close', function(e, wrap){
@@ -145,6 +145,12 @@ export const enhance = compose(
 						anchor: $('#wp-link-text').val(),
 						blank: $('#wp-link-target').prop('checked') ? 1 : 0,
 					});
+
+					wpLink.setDefaultValues = function() {
+						$('#wp-link-url').val('');
+						$('#wp-link-text').val('');
+						$('#wp-link-target').prop('checked', false);
+					};
 
 					$('#' + dummyID).remove();
 				} );
