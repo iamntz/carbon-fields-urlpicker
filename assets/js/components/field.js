@@ -30,7 +30,7 @@ export const UrlPicker = ({
 	return <Field field={field}>
 	{
 		field.value.url.length > 0 ?
-			<span className="carbon-fields--urlpicker">
+			<span className="carbon-fields--urlpicker" data-is-blank={field.value.blank ? 1 : 0}>
 				<span onClick={openUrlPicker}>
 					{ field.value.url.replace(`${carbonFieldsUrlpickerL10n.home_url}`, '') }<br/>
 					<small>{field.value.url_anchor}</small>
@@ -107,9 +107,10 @@ export const enhance = compose(
 			setFieldValue(field.id, {
 				url: '',
 				url_anchor: '',
-				blank: false,
+				blank: 0,
 			});
 		},
+
 		openUrlPicker: ({ field, setFieldValue }) => ({ target: { value } }) => {
 			let dummyID = 'dummy' + field.id;
 			let $ = jQuery;
@@ -132,7 +133,7 @@ export const enhance = compose(
 				wpLink.setDefaultValues = function() {
 					$('#wp-link-url').val(field.value.url);
 					$('#wp-link-text').val(field.value.url_anchor);
-					$('#wp-link-target').prop('checked', field.value.blank);
+					$('#wp-link-target').prop('checked', !!field.value.blank);
 				};
 
 				wpLink.init();
@@ -142,7 +143,7 @@ export const enhance = compose(
 					setFieldValue(field.id, {
 						url: $('#wp-link-url').val(),
 						url_anchor: $('#wp-link-text').val(),
-						blank: $('#wp-link-target').is(':checked'),
+						blank: $('#wp-link-target').prop('checked') ? 1 : 0,
 					});
 
 					$('#' + dummyID).remove();

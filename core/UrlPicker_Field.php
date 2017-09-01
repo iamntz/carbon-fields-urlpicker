@@ -10,7 +10,7 @@ class UrlPicker_Field extends Field
 
 	protected $url = '';
 	protected $anchor = '';
-	protected $blank = false;
+	protected $blank = 0;
 
 	/**
 	 * Create a field from a certain type with the specified label.
@@ -21,10 +21,14 @@ class UrlPicker_Field extends Field
 	 */
 	public function __construct($type, $name, $label)
 	{
-		$this->set_value_set(new Value_Set(Value_Set::TYPE_MULTIPLE_PROPERTIES, ['url' => '', 'url_anchor' => '', 'blank' => false]));
+		$this->set_value_set(new Value_Set(Value_Set::TYPE_MULTIPLE_PROPERTIES, [
+			'url' => $this->url,
+			'url_anchor' => $this->anchor,
+			'blank' => (bool) $this->blank
+		]));
+
 		remove_action('wp_ajax_carbonfields_urlpicker_get_tinymce_popup', [$this, 'get_tinymce_popup']);
 		add_action('wp_ajax_carbonfields_urlpicker_get_tinymce_popup', [$this, 'get_tinymce_popup']);
-		// add_action('admin_footer', [$this, 'get_tinymce_popup']);
 
 		parent::__construct($type, $name, $label);
 	}
@@ -82,9 +86,9 @@ class UrlPicker_Field extends Field
 		}
 
 		$value_set = [
-			'url' => '',
-			'url_anchor' => '',
-			'blank' => false,
+			'url' => $this->url,
+			'url_anchor' => $this->anchor,
+			'blank' => (bool) $this->blank,
 		];
 
 		foreach ($value_set as $key => $v) {
@@ -107,10 +111,12 @@ class UrlPicker_Field extends Field
 	{
 		$field_data = parent::to_json($load);
 
+		$field_data['value']['blank'] = (bool)$field_data['value']['blank'];
+
 		$field_data = array_merge($field_data, [
 			'url' => $this->url,
 			'url_anchor' => $this->anchor,
-			'blank' => $this->blank,
+			'blank' => (bool) $this->blank,
 		]);
 
 		return $field_data;
