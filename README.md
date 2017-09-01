@@ -7,7 +7,7 @@ Adds a `urlpicker` field type to Carbon Fields. Install using composer:
 composer require iamntz/carbon-field-url-picker
 ```
 
-Or by installing as a WP plugin.
+Or by installing as a WP plugin (composer is recommended though; installing as a plugin may throw an error).
 
 ## Return values:
 
