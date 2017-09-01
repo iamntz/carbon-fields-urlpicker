@@ -29,7 +29,6 @@ class UrlPicker_Field extends Field
 		parent::__construct($type, $name, $label);
 	}
 
-
 	/**
 	 * Prepare the field type for use
 	 * Called once per field type when activated
@@ -51,7 +50,13 @@ class UrlPicker_Field extends Field
 		$root_uri = \Carbon_Fields\Carbon_Fields::directory_to_url(\Carbon_Field_UrlPicker\DIR);
 
 		# Enqueue JS
-		wp_enqueue_script('carbon-field-urlpicker', $root_uri . '/assets/js/bundle.js', ['carbon-fields-boot', 'wplink', 'wpdialogs']);
+		wp_register_script('carbon-field-urlpicker', $root_uri . '/assets/js/bundle.js', ['carbon-fields-boot', 'wplink', 'wpdialogs']);
+		wp_localize_script('carbon-field-urlpicker', 'carbonFieldsUrlpickerL10n', [
+			'select_link' => __('Select Link'),
+			'remove_link' => __('Remove Link'),
+			'home_url' => home_url(),
+		]);
+		wp_enqueue_script('carbon-field-urlpicker');
 
 		# Enqueue CSS
 		wp_enqueue_style('carbon-field-urlpicker', $root_uri . '/assets/css/field.css', ['editor-buttons']);

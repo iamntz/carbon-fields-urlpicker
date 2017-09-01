@@ -28,9 +28,21 @@ export const UrlPicker = ({
 	openUrlPicker
 }) => {
 	return <Field field={field}>
+	{
+		field.value.url.length > 0 ?
+			<span className="carbon-fields--urlpicker">
+				<span onClick={openUrlPicker}>
+					{ field.value.url.replace(`${carbonFieldsUrlpickerL10n.home_url}`, '') }<br/>
+					<small>{field.value.url_anchor}</small>
+				</span>
+				<span className="carbon-fields--urlpicker__remove" onClick={resetFieldValues} title={carbonFieldsUrlpickerL10n.remove_link}>&times;</span>
+			</span>
+		:
 		<span
 			className="button button-secondary"
-			onClick={openUrlPicker}>cucu</span>
+			onClick={openUrlPicker}>{carbonFieldsUrlpickerL10n.select_link}</span>
+	}
+
 
 		<input
 			name={`${name}[url]`}
@@ -92,8 +104,11 @@ export const enhance = compose(
 	 */
 	withHandlers({
 		resetFieldValues: ({ field, setFieldValue }) => ({ target: { value } }) => {
-			console.log(field.id, value);
-			// setFieldValue(field.id, value)
+			setFieldValue(field.id, {
+				url: '',
+				url_anchor: '',
+				blank: false,
+			});
 		},
 		openUrlPicker: ({ field, setFieldValue }) => ({ target: { value } }) => {
 			let dummyID = 'dummy' + field.id;
