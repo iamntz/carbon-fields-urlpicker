@@ -18,32 +18,36 @@ import withSetup from 'fields/decorators/with-setup';
  * @param  {Object}        props
  * @param  {String}        props.name
  * @param  {Object}        props.field
- * @param  {Function}      props.handleChange
+ * @param  {Function}      props.resetFieldValues
  * @return {React.Element}
  */
 export const UrlPicker = ({
 	name,
 	field,
-	handleChange,
+	resetFieldValues,
 	openUrlPicker
 }) => {
 	return <Field field={field}>
 		<span
 			className="button button-secondary"
 			onClick={openUrlPicker}>cucu</span>
+
 		<input
 			name={`${name}[url]`}
 			value={field.value.url}
+			type="hidden"
 			readOnly />
 
 		<input
 			name={`${name}[url_anchor]`}
 			value={field.value.url_anchor}
+			type="hidden"
 			readOnly />
 
 		<input
 			name={`${name}[blank]`}
 			value={field.value.blank}
+			type="hidden"
 			readOnly />
 	</Field>;
 }
@@ -63,7 +67,7 @@ UrlPicker.propTypes = {
 			blank: PropTypes.boolean,
 		})
 	}),
-	handleChange: PropTypes.func,
+	resetFieldValues: PropTypes.func,
 	openUrlPicker: PropTypes.func,
 };
 
@@ -87,12 +91,16 @@ export const enhance = compose(
 	 * The handlers passed to the component.
 	 */
 	withHandlers({
-		handleChange: ({ field, setFieldValue }) => ({ target: { value } }) => setFieldValue(field.id, value),
-		openUrlPicker: ({ field }) => ({ target: { value } }) => {
+		resetFieldValues: ({ field, setFieldValue }) => ({ target: { value } }) => {
+			console.log(field.id, value);
+			// setFieldValue(field.id, value)
+		},
+		openUrlPicker: ({ field, setFieldValue }) => ({ target: { value } }) => {
 			let dummyID = 'dummy' + field.id;
 			let $ = jQuery;
+
 			if(!$('#wp-link-wrap').length) {
-				$.get(ajaxurl, { action: 'carbonfields_urlpicker_get_tinymce_popup' }, (data) => {
+				$.get(ajaxurl, { action: 'carbonfields_urlpicker_get_tinymce_popup' }, function(data) {
 					$('#wpfooter').after(data);
 					openTinyMceLinkEditor();
 				});
@@ -106,22 +114,22 @@ export const enhance = compose(
 				});
 
 				editorDummy.appendTo('body')
-			    // save any existing default initialization
-			    // wplink_defaults = wpLink.setDefaultValues || {};
+				wpLink.setDefaultValues = function() {
+					$('#wp-link-url').val(field.value.url);
+					$('#wp-link-text').val(field.value.url_anchor);
+					$('#wp-link-target').prop('checked', field.value.blank);
+				};
 
-			    // initialize with current URL and title
-			    // wpLink.setDefaultValues = function() {
-			    //     // set the current title and URL
-			    //     var $text_inputs = $('#wp-link').find('input[type=text]');
-			    //     $($text_inputs[1]).val(field.url_anchor);
-			    //     $($text_inputs[0]).val(field.url);
+				wpLink.init();
+				wpLink.open(dummyID);
 
-			    //     // target a blank page?
-			    //     var $checkbox_inputs = $('#wp-link').find('input[type=checkbox]');
-			    //     $checkbox_inputs.first().prop('checked', field.blank);
-			    // };
-			    wpLink.init(); // open the link popup
-			    wpLink.open(dummyID); // open the link popup
+				$(document).one( 'wplink-close', function(e, wrap){
+					setFieldValue(field.id, {
+						url: $('#wp-link-url').val(),
+						url_anchor: $('#wp-link-text').val(),
+						blank: $('#wp-link-target').is(':checked'),
+					});
+				} );
 			}
 
 			return false;
