@@ -13,7 +13,7 @@ Or by installing as a WP plugin (composer is recommended though; installing as a
 
 ```
 url: the actual URL
-url_anchor: the text anchor (might be blank)
+anchor: the text anchor (might be blank)
 blank: wether the link should open in a new window or not
 ```
 

@@ -23,7 +23,7 @@ class UrlPicker_Field extends Field
 	{
 		$this->set_value_set(new Value_Set(Value_Set::TYPE_MULTIPLE_PROPERTIES, [
 			'url' => $this->url,
-			'url_anchor' => $this->anchor,
+			'anchor' => $this->anchor,
 			'blank' => (bool) $this->blank
 		]));
 
@@ -87,7 +87,7 @@ class UrlPicker_Field extends Field
 
 		$value_set = [
 			'url' => $this->url,
-			'url_anchor' => $this->anchor,
+			'anchor' => $this->anchor,
 			'blank' => (bool) $this->blank,
 		];
 
@@ -115,7 +115,7 @@ class UrlPicker_Field extends Field
 
 		$field_data = array_merge($field_data, [
 			'url' => $this->url,
-			'url_anchor' => $this->anchor,
+			'anchor' => $this->anchor,
 			'blank' => (bool) $this->blank,
 		]);
 

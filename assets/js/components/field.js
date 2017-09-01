@@ -33,7 +33,7 @@ export const UrlPicker = ({
 			<span className="carbon-fields--urlpicker" data-is-blank={field.value.blank ? 1 : 0}>
 				<span onClick={openUrlPicker}>
 					{ field.value.url.replace(`${carbonFieldsUrlpickerL10n.home_url}`, '') }<br/>
-					<small>{field.value.url_anchor}</small>
+					<small>{field.value.anchor}</small>
 				</span>
 				<span className="carbon-fields--urlpicker__remove" onClick={resetFieldValues} title={carbonFieldsUrlpickerL10n.remove_link}>&times;</span>
 			</span>
@@ -51,8 +51,8 @@ export const UrlPicker = ({
 			readOnly />
 
 		<input
-			name={`${name}[url_anchor]`}
-			value={field.value.url_anchor}
+			name={`${name}[anchor]`}
+			value={field.value.anchor}
 			type="hidden"
 			readOnly />
 
@@ -75,7 +75,7 @@ UrlPicker.propTypes = {
 		id: PropTypes.string,
 		value: PropTypes.shape({
 			url: PropTypes.string,
-			url_anchor: PropTypes.string,
+			anchor: PropTypes.string,
 			blank: PropTypes.boolean,
 		})
 	}),
@@ -106,7 +106,7 @@ export const enhance = compose(
 		resetFieldValues: ({ field, setFieldValue }) => ({ target: { value } }) => {
 			setFieldValue(field.id, {
 				url: '',
-				url_anchor: '',
+				anchor: '',
 				blank: 0,
 			});
 		},
@@ -132,7 +132,7 @@ export const enhance = compose(
 				editorDummy.appendTo('body')
 				wpLink.setDefaultValues = function() {
 					$('#wp-link-url').val(field.value.url);
-					$('#wp-link-text').val(field.value.url_anchor);
+					$('#wp-link-text').val(field.value.anchor);
 					$('#wp-link-target').prop('checked', !!field.value.blank);
 				};
 
@@ -142,7 +142,7 @@ export const enhance = compose(
 				$(document).one( 'wplink-close', function(e, wrap){
 					setFieldValue(field.id, {
 						url: $('#wp-link-url').val(),
-						url_anchor: $('#wp-link-text').val(),
+						anchor: $('#wp-link-text').val(),
 						blank: $('#wp-link-target').prop('checked') ? 1 : 0,
 					});
 
