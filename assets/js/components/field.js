@@ -144,6 +144,8 @@ export const enhance = compose(
 						url_anchor: $('#wp-link-text').val(),
 						blank: $('#wp-link-target').is(':checked'),
 					});
+
+					$('#' + dummyID).remove();
 				} );
 			}
 
