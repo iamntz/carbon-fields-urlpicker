@@ -10,6 +10,7 @@ composer require iamntz/carbon-field-url-picker
 Or by installing as a WP plugin (composer is recommended though; installing as a plugin may throw an error).
 
 ## Return values:
+The field will return an associative array with the following values:
 
 ```
 url: the actual URL
@@ -21,6 +22,34 @@ blank: wether the link should open in a new window or not
 
 https://img.iamntz.com/jing/video_2017-09-01__12_22.mp4
 
+## Example
+
+### Registering A Field
+This goes in your `functions.php` as with other Carbon Fields fields. The only difference is that the type is `urlpicker`.
+
+```php
+use Carbon_Fields\Container;
+use Carbon_Fields\Field;
+
+add_action( 'carbon_fields_register_fields', 'crb_url_picker_test' );
+
+function crb_url_picker_test() {
+  Container::make( 'post_meta', 'URL Picker Test' )
+    ->add_fields( array(
+      Field::make( 'urlpicker', 'crb_my_link', 'URL Picker Test' )
+      ->set_help_text( "This is a test of the URL picker." )
+    ));
+}
+```
+
+### Using Field Values
+
+```php
+<?php $my_link = carbon_get_the_post_meta( 'crb_my_link' ); ?>
+<a href="<?= $my_link[url] ?>"<?= ( $my_link[blank] ? ' target="_blank"' : '') ?>><?= $my_link[anchor] ?></a>
+```
+
+Note that the `anchor` field will return `0` or `1`, depending on whether the checkbox is ticked next to "Open link in a new tab".
 
 ## Found this useful?
 
