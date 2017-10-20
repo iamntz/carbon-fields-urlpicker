@@ -4,7 +4,7 @@ _(this is an extension of [Carbon Fields](http://carbonfields.net/) plugin)_
 
 Adds a `urlpicker` field type to Carbon Fields. Install using composer:
 ```cli
-composer require iamntz/carbon-field-url-picker
+composer require iamntz/carbon-fields-urlpicker
 ```
 
 Or by installing as a WP plugin (composer is recommended though; installing as a plugin may throw an error).
