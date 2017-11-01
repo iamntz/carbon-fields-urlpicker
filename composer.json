@@ -4,7 +4,7 @@
     "keywords": ["wordpress", "carbon-field", "carbon-fields-urlpicker"],
     "homepage": "https://github.com/iamntz/carbon-fields-urlpicker",
 
-    "prefer-stable": true,
+    "minimum-stability": "dev",
 
     "type": "library",
     "license": "GPL-2.0+",
