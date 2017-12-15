@@ -125,6 +125,10 @@ export const enhance = compose(
 				openTinyMceLinkEditor();
 			}
 
+			function addLinkText(e) {
+				$('#wp-link-text').val($(e.currentTarget).find('.item-title').text());
+			}
+
 			function openTinyMceLinkEditor() {
 				let editorDummy = jQuery('<textarea />', {
 					id: dummyID
@@ -139,7 +143,10 @@ export const enhance = compose(
 
 				wpLink.open(dummyID);
 
-				$(document).one( 'wplink-close', function(e, wrap){
+				$('#search-results, #most-recent-results').on('click.carbon-fields-urlpicker', 'li', addLinkText);
+
+				editorDummy.one( 'change', function(e, wrap){
+					console.log(e, wrap);
 					setFieldValue(field.id, {
 						url: $('#wp-link-url').val(),
 						anchor: $('#wp-link-text').val(),
@@ -152,6 +159,7 @@ export const enhance = compose(
 						$('#wp-link-target').prop('checked', false);
 					};
 
+					$('#search-results, #most-recent-results').off('click.carbon-fields-urlpicker', 'li', addLinkText);
 					$('#' + dummyID).remove();
 				} );
 			}
