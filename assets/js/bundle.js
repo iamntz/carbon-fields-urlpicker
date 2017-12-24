@@ -300,7 +300,6 @@ var enhance = exports.enhance = (0, _recompose.compose)(
 				$('#search-results, #most-recent-results').on('click.carbon-fields-urlpicker', 'li', addLinkText);
 
 				editorDummy.one('change', function (e, wrap) {
-					console.log(e, wrap);
 					setFieldValue(field.id, {
 						url: $('#wp-link-url').val(),
 						anchor: $('#wp-link-text').val(),
