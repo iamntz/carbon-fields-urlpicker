@@ -12,9 +12,7 @@
             "email": "github@iamntz.com"
         }
     ],
-    "require": {
-        "htmlburger/carbon-fields": "^2.0"
-    },
+    "require": { },
     "autoload": {
         "files": [
             "field.php"
