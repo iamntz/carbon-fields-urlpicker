@@ -106,12 +106,22 @@ module.exports = (__webpack_require__(0))("uokr");
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(jQuery) {
+
 
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 exports.enhance = exports.UrlPicker = undefined;
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; /**
+                                                                                                                                                                                                                                                                   * The external dependencies.
+                                                                                                                                                                                                                                                                   */
+
+
+/**
+ * The internal dependencies.
+ */
+
 
 var _react = __webpack_require__(6);
 
@@ -135,20 +145,10 @@ var _withSetup = __webpack_require__(11);
 
 var _withSetup2 = _interopRequireDefault(_withSetup);
 
+var _LinkPicker = __webpack_require__(12);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/**
- * Render a number input field.
- *
- * @param  {Object}        props
- * @param  {String}        props.name
- * @param  {Object}        props.field
- * @param  {Function}      props.resetFieldValues
- * @return {React.Element}
- */
-/**
- * The external dependencies.
- */
 var UrlPicker = exports.UrlPicker = function UrlPicker(_ref) {
 	var name = _ref.name,
 	    field = _ref.field,
@@ -160,58 +160,62 @@ var UrlPicker = exports.UrlPicker = function UrlPicker(_ref) {
 		{ field: field },
 		field.value.url.length > 0 ? _react2.default.createElement(
 			'span',
-			{ className: 'carbon-fields--urlpicker', 'data-is-blank': field.value.blank ? 1 : 0 },
+			{
+				className: 'carbon-fields--urlpicker',
+				'data-is-blank': field.value.blank ? 1 : 0 },
 			_react2.default.createElement(
 				'span',
 				{ onClick: openUrlPicker },
-				field.value.url.replace('' + carbonFieldsUrlpickerL10n.home_url, ''),
+				_react2.default.createElement(
+					'strong',
+					null,
+					field.value.url.replace('' + carbonFieldsUrlpickerL10n.home_url, '')
+				),
 				_react2.default.createElement('br', null),
 				_react2.default.createElement(
 					'small',
 					null,
-					field.value.anchor
+					_react2.default.createElement(
+						'em',
+						null,
+						field.value.anchor
+					)
 				)
 			),
 			_react2.default.createElement(
 				'span',
-				{ className: 'carbon-fields--urlpicker__remove', onClick: resetFieldValues, title: carbonFieldsUrlpickerL10n.remove_link },
+				{
+					className: 'carbon-fields--urlpicker__remove',
+					onClick: resetFieldValues,
+					title: carbonFieldsUrlpickerL10n.remove_link },
 				'\xD7'
 			)
 		) : _react2.default.createElement(
 			'span',
-			{
-				className: 'button button-secondary',
-				onClick: openUrlPicker },
+			{ className: 'button button-secondary', onClick: openUrlPicker },
 			carbonFieldsUrlpickerL10n.select_link
 		),
 		_react2.default.createElement('input', {
 			name: name + '[url]',
 			value: field.value.url,
 			type: 'hidden',
-			readOnly: true }),
+			readOnly: true
+		}),
 		_react2.default.createElement('input', {
 			name: name + '[anchor]',
 			value: field.value.anchor,
 			type: 'hidden',
-			readOnly: true }),
+			readOnly: true
+		}),
 		_react2.default.createElement('input', {
 			name: name + '[blank]',
 			value: field.value.blank,
 			type: 'hidden',
-			readOnly: true })
+			readOnly: true
+		})
 	);
 };
 
-/**
- * Validate the props.
- *
- * @type {Object}
- */
-
-
-/**
- * The internal dependencies.
- */
 UrlPicker.propTypes = {
 	name: _propTypes2.default.string,
 	field: _propTypes2.default.shape({
@@ -226,26 +230,7 @@ UrlPicker.propTypes = {
 	openUrlPicker: _propTypes2.default.func
 };
 
-/**
- * The enhancer.
- *
- * @type {Function}
- */
-var enhance = exports.enhance = (0, _recompose.compose)(
-/**
- * Connect to the Redux store.
- */
-(0, _withStore2.default)(),
-
-/**
- * Attach the setup hooks.
- */
-(0, _withSetup2.default)(),
-
-/**
- * The handlers passed to the component.
- */
-(0, _recompose.withHandlers)({
+var enhance = exports.enhance = (0, _recompose.compose)((0, _withStore2.default)(), (0, _withSetup2.default)(), (0, _recompose.withHandlers)({
 	resetFieldValues: function resetFieldValues(_ref2) {
 		var field = _ref2.field,
 		    setFieldValue = _ref2.setFieldValue;
@@ -263,67 +248,20 @@ var enhance = exports.enhance = (0, _recompose.compose)(
 	openUrlPicker: function openUrlPicker(_ref4) {
 		var field = _ref4.field,
 		    setFieldValue = _ref4.setFieldValue;
-		return function (_ref5) {
-			var value = _ref5.target.value;
+		return function (e) {
+			var target = e.currentTarget;
 
-			var dummyID = 'dummy' + field.id;
-			var $ = jQuery;
-
-			if (!$('#wp-link-wrap').length) {
-				$.get(ajaxurl, { action: 'carbonfields_urlpicker_get_tinymce_popup' }, function (data) {
-					$('#wpfooter').after(data);
-					wpLink.init();
-					openTinyMceLinkEditor();
-				});
-			} else {
-				openTinyMceLinkEditor();
-			}
-
-			function addLinkText(e) {
-				$('#wp-link-text').val($(e.currentTarget).find('.item-title').text());
-			}
-
-			function openTinyMceLinkEditor() {
-				var editorDummy = jQuery('<textarea />', {
-					id: dummyID
-				});
-
-				editorDummy.appendTo('body');
-				wpLink.setDefaultValues = function () {
-					$('#wp-link-url').val(field.value.url);
-					$('#wp-link-text').val(field.value.anchor);
-					$('#wp-link-target').prop('checked', !!field.value.blank);
-				};
-
-				wpLink.open(dummyID);
-
-				$('#search-results, #most-recent-results').on('click.carbon-fields-urlpicker', 'li', addLinkText);
-
-				editorDummy.one('change', function (e, wrap) {
-					setFieldValue(field.id, {
-						url: $('#wp-link-url').val(),
-						anchor: $('#wp-link-text').val(),
-						blank: $('#wp-link-target').prop('checked') ? 1 : 0
-					});
-
-					wpLink.setDefaultValues = function () {
-						$('#wp-link-url').val('');
-						$('#wp-link-text').val('');
-						$('#wp-link-target').prop('checked', false);
-					};
-
-					$('#search-results, #most-recent-results').off('click.carbon-fields-urlpicker', 'li', addLinkText);
-					$('#' + dummyID).remove();
-				});
-			}
-
+			(0, _LinkPicker.maybeLoadTinyMcerPicker)().then(function () {
+				return (0, _LinkPicker.openTinyMceLinkEditor)(target, field);
+			}).then(function (data) {
+				setFieldValue(field.id, _extends({}, data));
+			});
 			return false;
 		};
 	}
 }));
 
 exports.default = (0, _recompose.setStatic)('type', ['urlpicker'])(enhance(UrlPicker));
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
 
 /***/ }),
 /* 5 */
@@ -366,6 +304,82 @@ module.exports = (__webpack_require__(0))("0yqe");
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = (__webpack_require__(0))("8ctJ");
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(jQuery) {
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+var $ = jQuery;
+
+var maybeLoadTinyMcerPicker = exports.maybeLoadTinyMcerPicker = function maybeLoadTinyMcerPicker() {
+	return new Promise(function (resolve, reject) {
+		if ($('#wp-link-wrap').length) {
+			resolve();
+			return;
+		}
+
+		$.get(ajaxurl, { action: 'carbonfields_urlpicker_get_tinymce_popup' }, function (data) {
+			$('#wpfooter').after(data);
+			wpLink.init();
+			resolve();
+		});
+	});
+};
+
+var openTinyMceLinkEditor = exports.openTinyMceLinkEditor = function openTinyMceLinkEditor(target, _ref) {
+	var id = _ref.id,
+	    value = _ref.value;
+
+	var dummyID = 'dummy-' + id;
+
+	var editorDummy = $('<textarea />', {
+		id: dummyID
+	});
+
+	editorDummy.insertAfter(target);
+
+	function addLinkText(e) {
+		$('#wp-link-text').val($(e.currentTarget).find('.item-title').text());
+	}
+
+	wpLink.setDefaultValues = function () {
+		$('#wp-link-url').val(value.url);
+		$('#wp-link-text').val(value.anchor);
+		$('#wp-link-target').prop('checked', !!value.blank);
+	};
+
+	wpLink.open(dummyID);
+
+	$('#search-results, #most-recent-results').on('click.carbon-fields-urlpicker', 'li', addLinkText);
+
+	return new Promise(function (resolve, reject) {
+		editorDummy.one('change', function (e, wrap) {
+			var data = {
+				url: $('#wp-link-url').val(),
+				anchor: $('#wp-link-text').val(),
+				blank: $('#wp-link-target').prop('checked') ? 1 : 0
+			};
+
+			wpLink.setDefaultValues = function () {
+				$('#wp-link-url').val('');
+				$('#wp-link-text').val('');
+				$('#wp-link-target').prop('checked', false);
+			};
+
+			$('#search-results, #most-recent-results').off('click.carbon-fields-urlpicker', 'li', addLinkText);
+			$('#' + dummyID).remove();
+
+			resolve(data);
+		});
+	});
+};
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
 
 /***/ })
 /******/ ]);
