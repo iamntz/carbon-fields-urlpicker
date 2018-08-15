@@ -24,6 +24,7 @@ export const openTinyMceLinkEditor = (target, { id, value }) => {
 
 	let editorDummy = $('<textarea />', {
 		id: dummyID,
+		style: 'height: 0; width: 0; position: absolute; left: -9999px',
 	});
 
 	editorDummy.insertAfter(target);
@@ -51,7 +52,7 @@ export const openTinyMceLinkEditor = (target, { id, value }) => {
 	);
 
 	return new Promise((resolve, reject) => {
-		editorDummy.one('change', function(e, wrap) {
+		editorDummy.one('change', (e, wrap) => {
 			let data = {
 				url: $('#wp-link-url').val(),
 				anchor: $('#wp-link-text').val(),
@@ -69,9 +70,15 @@ export const openTinyMceLinkEditor = (target, { id, value }) => {
 				'li',
 				addLinkText,
 			);
-			$('#' + dummyID).remove();
 
 			resolve(data);
+		});
+
+		$(document).one('wplink-close', () => {
+			// using a bit of delay just to be sure the value is saved before removing the textarea
+			window.setTimeout( () => {
+				// $('#' + dummyID).remove();
+			}, 100 );
 		});
 	});
 };

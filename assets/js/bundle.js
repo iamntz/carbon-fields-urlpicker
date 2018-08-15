@@ -123,29 +123,29 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
  */
 
 
-var _react = __webpack_require__(6);
+var _react = __webpack_require__(5);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _propTypes = __webpack_require__(7);
+var _propTypes = __webpack_require__(6);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _recompose = __webpack_require__(8);
+var _recompose = __webpack_require__(7);
 
-var _field = __webpack_require__(9);
+var _field = __webpack_require__(8);
 
 var _field2 = _interopRequireDefault(_field);
 
-var _withStore = __webpack_require__(10);
+var _withStore = __webpack_require__(9);
 
 var _withStore2 = _interopRequireDefault(_withStore);
 
-var _withSetup = __webpack_require__(11);
+var _withSetup = __webpack_require__(10);
 
 var _withSetup2 = _interopRequireDefault(_withSetup);
 
-var _LinkPicker = __webpack_require__(12);
+var _LinkPicker = __webpack_require__(11);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -265,48 +265,42 @@ exports.default = (0, _recompose.setStatic)('type', ['urlpicker'])(enhance(UrlPi
 
 /***/ }),
 /* 5 */
-/***/ (function(module, exports) {
-
-module.exports = jQuery;
-
-/***/ }),
-/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = (__webpack_require__(1))("GiK3");
 
 /***/ }),
-/* 7 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = (__webpack_require__(1))("KSGD");
 
 /***/ }),
-/* 8 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = (__webpack_require__(1))("zpMW");
 
 /***/ }),
-/* 9 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = (__webpack_require__(0))("M6Uh");
 
 /***/ }),
-/* 10 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = (__webpack_require__(0))("0yqe");
 
 /***/ }),
-/* 11 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = (__webpack_require__(0))("8ctJ");
 
 /***/ }),
-/* 12 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -339,7 +333,8 @@ var openTinyMceLinkEditor = exports.openTinyMceLinkEditor = function openTinyMce
 	var dummyID = 'dummy-' + id;
 
 	var editorDummy = $('<textarea />', {
-		id: dummyID
+		id: dummyID,
+		style: 'height: 0; width: 0; position: absolute; left: -9999px'
 	});
 
 	editorDummy.insertAfter(target);
@@ -373,13 +368,25 @@ var openTinyMceLinkEditor = exports.openTinyMceLinkEditor = function openTinyMce
 			};
 
 			$('#search-results, #most-recent-results').off('click.carbon-fields-urlpicker', 'li', addLinkText);
-			$('#' + dummyID).remove();
 
 			resolve(data);
 		});
+
+		$(document).one('wplink-close', function () {
+			// using a bit of delay just to be sure the value is saved before removing the textarea
+			window.setTimeout(function () {
+				// $('#' + dummyID).remove();
+			}, 100);
+		});
 	});
 };
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(12)))
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports) {
+
+module.exports = jQuery;
 
 /***/ })
 /******/ ]);
