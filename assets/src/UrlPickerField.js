@@ -12,9 +12,9 @@ import {
 class UrlPickerField extends Component {
   resetFieldValues = (e) => {
     e.preventDefault();
-    const {field} = this.props;
+    const {field, id} = this.props;
 
-    this.props.onChange(field.id, {
+    this.props.onChange(id, {
       url: '',
       anchor: '',
       blank: '',
@@ -23,11 +23,11 @@ class UrlPickerField extends Component {
 
   openUrlPicker = ( e ) => {
       const target = e.currentTarget;
-      const {field} = this.props;
+      const {field, id} = this.props;
 
       maybeLoadTinyMcerPicker()
         .then(() => openTinyMceLinkEditor(target, field))
-        .then(data => this.props.onChange(field.id, { ...data }) );
+        .then(data => this.props.onChange(id, { ...data }) );
 
       return false;
   }
