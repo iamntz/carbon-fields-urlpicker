@@ -24,9 +24,11 @@ class UrlPickerField extends Component {
   openUrlPicker = ( e ) => {
       const target = e.currentTarget;
       const {field, id} = this.props;
+      // if field has a value it's given to the field as a direct prop, if not get the default values from field config
+		  const value = this.props.value || this.props.field.value;
 
       maybeLoadTinyMcerPicker()
-        .then(() => openTinyMceLinkEditor(target, field))
+        .then(() => openTinyMceLinkEditor(target, field, value))
         .then(data => this.props.onChange(id, { ...data }) );
 
       return false;
@@ -34,7 +36,8 @@ class UrlPickerField extends Component {
 
 
   getButton = () => {
-    const {value}  = this.props.field;
+    // if field has a value it's given to the field as a direct prop, if not get the default values from field config
+		const value = this.props.value || this.props.field.value;
 
     if( value.url.length > 0) {
       return  (

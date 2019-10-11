@@ -19,7 +19,7 @@ export const maybeLoadTinyMcerPicker = () => {
 	});
 };
 
-export const openTinyMceLinkEditor = (target, { id, value }) => {
+export const openTinyMceLinkEditor = (target, { id }, value) => {
 	let dummyID = `dummy-${id}`;
 
 	let editorDummy = $('<textarea />', {
