@@ -19,7 +19,7 @@ export const maybeLoadTinyMcerPicker = () => {
 	});
 };
 
-export const openTinyMceLinkEditor = (target, { id, value }) => {
+export const openTinyMceLinkEditor = (target, id, value) => {
 	let dummyID = `dummy-${id}`;
 
 	let editorDummy = $('<textarea />', {
@@ -72,13 +72,6 @@ export const openTinyMceLinkEditor = (target, { id, value }) => {
 			);
 
 			resolve(data);
-		});
-
-		$(document).one('wplink-close', () => {
-			// using a bit of delay just to be sure the value is saved before removing the textarea
-			window.setTimeout( () => {
-				// $('#' + dummyID).remove();
-			}, 100 );
 		});
 	});
 };

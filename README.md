@@ -2,9 +2,10 @@
 
 _(this is an extension of [Carbon Fields](http://carbonfields.net/) plugin)_
 
-Adds a `urlpicker` field type to Carbon Fields. Install using composer:
+For Carbon Fields v3, you need to specify the `v3` branch:
+
 ```cli
-composer require iamntz/carbon-fields-urlpicker
+composer require iamntz/carbon-fields-urlpicker:v3.x-dev
 ```
 
 You're using Carbon Fields v3? Then install it from the v3 branch!

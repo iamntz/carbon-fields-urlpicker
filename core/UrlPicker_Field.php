@@ -53,17 +53,21 @@ class UrlPicker_Field extends Field
 	{
 		$root_uri = \Carbon_Fields\Carbon_Fields::directory_to_url(\Carbon_Field_UrlPicker\DIR);
 
+		$suffix = defined('SCRIPT_DEBUG') && SCRIPT_DEBUG ? '' : '.min';
+
 		# Enqueue JS
-		wp_register_script('carbon-field-urlpicker', $root_uri . '/assets/js/bundle.js', ['carbon-fields-boot', 'wplink', 'wpdialogs']);
+		wp_register_script('carbon-field-urlpicker', $root_uri . "/assets/build/bundle{$suffix}.js", ['carbon-fields-core', 'wplink', 'wpdialogs']);
+
 		wp_localize_script('carbon-field-urlpicker', 'carbonFieldsUrlpickerL10n', [
 			'select_link' => __('Select Link'),
 			'remove_link' => __('Remove Link'),
 			'home_url' => home_url(),
 		]);
-		wp_enqueue_script('carbon-field-urlpicker');
+
+    wp_enqueue_script('carbon-field-urlpicker');
 
 		# Enqueue CSS
-		wp_enqueue_style('carbon-field-urlpicker', $root_uri . '/assets/css/field.css', ['editor-buttons']);
+		wp_enqueue_style('carbon-field-urlpicker', $root_uri . "/assets/build/bundle{$suffix}.css", ['editor-buttons']);
 	}
 
 	public function get_tinymce_popup()
