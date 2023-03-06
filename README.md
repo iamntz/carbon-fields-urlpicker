@@ -52,7 +52,7 @@ function crb_url_picker_test() {
 <a href="<?= $my_link[url] ?>"<?= ( $my_link[blank] ? ' target="_blank"' : '') ?>><?= $my_link[anchor] ?></a>
 ```
 
-Note that the `anchor` field will return `0` or `1`, depending on whether the checkbox is ticked next to "Open link in a new tab".
+Note that the `blank` field will return `0` or `1`, depending on whether the checkbox is ticked next to "Open link in a new tab".
 
 ## Found this useful?
 
