@@ -1,0 +1,39 @@
+name: 'Release'
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  compile_and_deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: 'Install composer dependencies'
+        run: |
+          composer install --prefer-dist --no-progress
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: 'Build'
+        run: |
+          npm install
+          npm run production 
+
+      - name: 'Pack files'
+        run: |
+          rsync -WHRarz --exclude={"node_modules",".babelrc.js",".postcssrc.js","webpack.config.js",".prettierrc","package.json","package-lock.json","yarn.lock",".git",".github"} . ./release
+          zip  -qr -0 "carbon-fields-urlpicker.zip" ./release
+
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: |
+            carbon-fields-urlpicker.zip

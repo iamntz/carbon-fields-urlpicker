@@ -21,10 +21,6 @@ anchor: the text anchor (might be blank)
 blank: wether the link should open in a new window or not
 ```
 
-## Demo
-
-https://img.iamntz.com/jing/video_2017-09-01__12_22.mp4
-
 ## Example
 
 ### Registering A Field
