@@ -2,6 +2,9 @@
 use Carbon_Fields\Carbon_Fields;
 use Carbon_Field_UrlPicker\UrlPicker_Field;
 
+if (!function_exists('add_action')) {
+    return;
+}
 define('Carbon_Field_UrlPicker\\DIR', __DIR__);
 
 add_action('after_setup_theme', function () {

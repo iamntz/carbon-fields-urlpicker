@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Carbon Field Url Picker
  * Description: Url Picker Field extension for Carbon Fields.
- * Version: 1.0.0
+ * Version: 3.0.6
  * Author: Ionuț Staicu
  * Author URI: https://ionutstaicu.com
  * License: GPL2
