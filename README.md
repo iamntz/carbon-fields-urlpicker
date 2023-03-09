@@ -2,15 +2,15 @@
 
 _(this is an extension of [Carbon Fields](http://carbonfields.net/) plugin)_
 
-For Carbon Fields v3, you need to specify the `v3` branch:
+Grab the release from the [releases page](https://github.com/iamntz/carbon-fields-urlpicker/releases) and install it as a regular plugin.
 
-```cli
-composer require iamntz/carbon-fields-urlpicker:v3.x-dev
+You can also install it via composer:
+
+```
+composer require iamntz/carbon-fields-urlpicker
 ```
 
-(first, make sure you have `"minimum-stability": "dev"` set in `composer.json`)
-
-Or by installing as a WP plugin (composer is recommended though; installing as a plugin may throw an error).
+But you need to make sure that you also run `npm install` and `npm run production` in order to have assets compiled.
 
 ## Return values:
 The field will return an associative array with the following values:
