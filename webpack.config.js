@@ -3,7 +3,7 @@
  */
 const path = require( 'path' );
 const MiniCssExtractPlugin = require( 'mini-css-extract-plugin' );
-const OptimizeCssAssetsPlugin = require( 'optimize-css-assets-webpack-plugin' );
+const OptimizeCssAssetsPlugin = require( 'css-minimizer-webpack-plugin' );
 const TerserPlugin = require( 'terser-webpack-plugin' );
 const { ProvidePlugin } = require( 'webpack' );
 
@@ -82,15 +82,8 @@ module.exports = {
         ...(
             isProduction
             ? [
-                new OptimizeCssAssetsPlugin( {
-                    cssProcessorPluginOptions: {
-                        preset: [ 'default', { discardComments: { removeAll: true } } ]
-                    }
-                } ),
-                new TerserPlugin( {
-                    cache: true,
-                    parallel: true
-                } )
+                new OptimizeCssAssetsPlugin(),
+                new TerserPlugin()
             ]
             : []
         )
