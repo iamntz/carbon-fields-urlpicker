@@ -99,7 +99,7 @@ class UrlPickerField extends Component {
 
       <input
         name={`${name}[blank]`}
-        value={value.blank}
+        value={value.blank ? 1 : 0}
         type="hidden"
         readOnly
       />
