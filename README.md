@@ -2,15 +2,13 @@
 
 _(this is an extension of [Carbon Fields](http://carbonfields.net/) plugin)_
 
-Grab the release from the [releases page](https://github.com/iamntz/carbon-fields-urlpicker/releases) and install it as a regular plugin.
-
-You can also install it via composer:
+You can install it via composer:
 
 ```
-composer require iamntz/carbon-fields-urlpicker
+composer require iamntz/carbon-fields-urlpicker --prefer-dist
 ```
 
-But you need to make sure that you also run `npm install` and `npm run production` in order to have assets compiled.
+If you install it from the source, you need to make sure that you also run `npm install` and `npm run production` in order to have assets compiled.
 
 ## Return values:
 The field will return an associative array with the following values:
