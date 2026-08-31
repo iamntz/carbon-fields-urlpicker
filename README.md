@@ -46,9 +46,33 @@ function crb_url_picker_test() {
 <a href="<?= $my_link[url] ?>"<?= ( $my_link[blank] ? ' target="_blank"' : '') ?>><?= $my_link[anchor] ?></a>
 ```
 
+#### Use preview in a complex (repeater) field via `set_header_template`
+The value of the field is an object of this shape:
+
+```d.ts
+{
+    url: string,
+    anchor: string,
+    blank: bool,
+}
+```
+Which means you can use it inside a `->set_header_template()` call _and_ do some basic text alteration:
+
+```php
+
+Field::make( 'complex', 'crb_slider', __( 'Slider' ) )
+  ->add_fields([ Field::make( 'urlpicker', 'url', __( 'Block Heading' ) ) ])
+ ->set_header_template( '
+    <% if (url?.anchor && typeof url?.anchor === `string`) { %>
+        <%- url?.anchor.substr(0, 10) %>
+    <% } %>
+')
+```
+
+
 Note that the `blank` field will return `0` or `1`, depending on whether the checkbox is ticked next to "Open link in a new tab".
 
 ## Found this useful?
 
-You can get [hosting](https://m.do.co/c/c95a44d0e992) (and receive $10 credit!), [donate](https://www.paypal.me/iamntz) or buy me a [gift](http://iamntz.com/wishlist).
+You can get [hosting](https://m.do.co/c/c95a44d0e992) (and receive $10 credit!) or [donate](https://www.paypal.me/iamntz).
 
