@@ -9,10 +9,23 @@ import {
   openTinyMceLinkEditor,
 } from './LinkPicker.js';
 
+const asString = (value) => (typeof value === 'string' ? value : '');
+
 class UrlPickerField extends Component {
+  getValue = () => {
+    const raw = this.props.value || this.props.field.value || {};
+    const value = raw && typeof raw === 'object' ? raw : {};
+
+    return {
+      url: asString(value.url),
+      anchor: asString(value.anchor),
+      blank: value.blank ? 1 : 0,
+    };
+  }
+
   resetFieldValues = (e) => {
     e.preventDefault();
-    const {field, id} = this.props;
+    const {id} = this.props;
 
     this.props.onChange(id, {
       url: '',
@@ -24,8 +37,7 @@ class UrlPickerField extends Component {
   openUrlPicker = ( e ) => {
       const target = e.currentTarget;
       const {id} = this.props; // use a unique id value in case field is used in complex field, field.id is always root field id
-      // if field has a value it's given to the field as a direct prop, if not get the default values from field config
-		  const value = this.props.value || this.props.field.value;
+      const value = this.getValue();
 
       maybeLoadTinyMcerPicker()
         .then(() => openTinyMceLinkEditor(target, id, value))
@@ -36,14 +48,13 @@ class UrlPickerField extends Component {
 
 
   getButton = () => {
-    // if field has a value it's given to the field as a direct prop, if not get the default values from field config
-		const value = this.props.value || this.props.field.value;
+    const value = this.getValue();
 
     if( value.url.length > 0) {
       return  (
       <span
         className="carbon-fields--urlpicker"
-        data-is-blank={value.blank ? 1 : 0}>
+        data-is-blank={value.blank}>
         <span onClick={this.openUrlPicker.bind(this)}>
           <strong>{value.url.replace(`${carbonFieldsUrlpickerL10n.home_url}`, '')}</strong>
           <br />
@@ -72,12 +83,8 @@ class UrlPickerField extends Component {
    * @return {Object}
    */
   render() {
-    const {
-      id,
-      name,
-      value,
-      field
-    } = this.props;
+    const { name } = this.props;
+    const value = this.getValue();
 
     return  (
       <div>
@@ -99,7 +106,7 @@ class UrlPickerField extends Component {
 
       <input
         name={`${name}[blank]`}
-        value={value.blank ? 1 : 0}
+        value={value.blank}
         type="hidden"
         readOnly
       />
